@@ -34,13 +34,5 @@ install:
       stack build --system-ghc --test --bench --no-run-tests --no-run-benchmarks
     fi
 
-script:
-  - |
-    if [ -z "$STACK_YAML" ]; then
-      cabal new-test --enable-tests
-    else
-      stack test --system-ghc
-    fi
-
 notifications:
   email: false
