@@ -18,10 +18,10 @@ extra-source-files:  CHANGELOG.md
 
 executable PersistantTodo
   main-is:             Main.hs
-  other-modules:
-  - Task.hs
+  other-modules:       Task
   -- other-extensions:
   build-depends:       base ^>=4.12.0.0,
-                       opaleye >= 0.6.7004 && < 0.7
+                       opaleye >= 0.6.7004 && < 0.7,
+                       optparse-applicative >= 0.15.1 && < 0.16
   hs-source-dirs:      src
   default-language:    Haskell2010
