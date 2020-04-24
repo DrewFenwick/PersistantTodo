@@ -14,7 +14,7 @@ author:              Drew Fenwick
 maintainer:          drew.e.fenwick+github@gmail.com
 -- copyright:
 -- category:
-extra-source-files:  CHANGELOG.md
+-- extra-source-files:  CHANGELOG.md
 
 executable PersistantTodo
   main-is:             Main.hs
