@@ -20,10 +20,10 @@ jobs:
     - name: Install dependencies
       run: |
         cabal update
-        cabal install --only-dependencies --enable-tests
+        cabal install --only-dependencies
     - name: Build
       run: |
         cabal configure --enable-tests
-        cabal build
+        cabal build --disable-optimization
     - name: Run tests
       run: cabal test
