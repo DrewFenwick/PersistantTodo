@@ -18,7 +18,8 @@ maintainer:          drew.e.fenwick+github@gmail.com
 
 executable PersistentTodo
   main-is:             Main.hs
-  other-modules:       Task
+  other-modules:       PersistentTodo.Task
+                       PersistentTodo.Command
   -- other-extensions:
   build-depends:       base ^>=4.12.0.0,
                        opaleye >= 0.6.7004 && < 0.7,

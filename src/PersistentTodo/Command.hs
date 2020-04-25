@@ -1,4 +1,6 @@
-module Command where
+module PersistentTodo.Command where
+
+import PersistentTodo.Task
 
 data Command
   = Add Task

@@ -1,4 +1,4 @@
-module Task where
+module PersistentTodo.Task where
 
 data Status 
   = Pending
