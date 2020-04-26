@@ -11,9 +11,6 @@ module PersistentTodo.Task
 where
 
 import           Opaleye
-import           Data.Profunctor.Product        ( p2
-                                                , p3
-                                                )
 import           Data.Profunctor.Product.TH     ( makeAdaptorAndInstance )
 
 data Status
