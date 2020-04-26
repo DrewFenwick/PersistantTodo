@@ -22,10 +22,10 @@ executable PersistentTodo
                        PersistentTodo.Command
                        PersistentTodo.Command.Handler
   -- other-extensions:
-  build-depends:       base ^>=4.12.0.0,
-                       opaleye >= 0.6.7004 && < 0.7,
-                       optparse-applicative >= 0.15.1 && < 0.16,
-                       product-profunctors >= 0.10.0 && < 0.11,
+  build-depends:       base ^>= 4.12.0.0,
+                       opaleye ^>= 0.6.7004,
+                       optparse-applicative ^>= 0.15.1,
+                       product-profunctors ^>= 0.10.0,
                        monads-tf ^>= 0.1.0,
                        postgresql-simple ^>= 0.6.2,
   hs-source-dirs:      src
