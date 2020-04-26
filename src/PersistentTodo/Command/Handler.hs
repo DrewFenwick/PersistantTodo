@@ -14,7 +14,7 @@ import           Database.PostgreSQL.Simple     ( Connection )
 handle
   :: (MonadIO m, MonadReader m, EnvType m ~ Connection)
   => Command
-  -> m Connection
+  -> m ()
 handle = \case
   Add      place -> undefined
   Complete place -> undefined
