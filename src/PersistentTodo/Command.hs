@@ -1,4 +1,7 @@
-module PersistentTodo.Command (Command(..)) where
+module PersistentTodo.Command
+  ( Command(..)
+  )
+where
 
 data Command
   = Add String
