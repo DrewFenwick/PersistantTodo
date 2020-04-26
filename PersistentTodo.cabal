@@ -20,6 +20,7 @@ executable PersistentTodo
   main-is:             Main.hs
   other-modules:       PersistentTodo.Task
                        PersistentTodo.Command
+                       PersistentTodo.Command.Handler
   -- other-extensions:
   build-depends:       base ^>=4.12.0.0,
                        opaleye >= 0.6.7004 && < 0.7,
