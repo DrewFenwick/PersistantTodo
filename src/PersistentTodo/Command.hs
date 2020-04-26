@@ -1,11 +1,10 @@
 module PersistentTodo.Command where
 
-import PersistentTodo.Task
-
 data Command
-  = Add Task
+  = Add String
   | Complete Int
   | Move Int Int
   | Remove Int
   | Clean
   | Wipe
+  deriving (Show)
