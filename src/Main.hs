@@ -8,7 +8,7 @@ main :: IO ()
 main = performCommand =<< execParser opts
 
 performCommand :: Command -> IO ()
-performCommand = print
+performCommand = undefined
 
 opts :: ParserInfo Command
 opts = info parseCommand mempty
@@ -35,4 +35,5 @@ parseMove = Move <$> getPos <*> getPos
 parseRemove :: Parser Command
 parseRemove = Remove <$> getPos
 
-getPos = argument auto (metavar "POSITION")
+getPos :: Parser Place
+getPos = argument (Place <$> auto) (metavar "POSITION")

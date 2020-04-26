@@ -1,13 +1,15 @@
 module PersistentTodo.Command
   ( Command(..)
+  , Place(..)
   )
 where
 
 data Command
   = Add String
-  | Complete Int
-  | Move Int Int
-  | Remove Int
+  | Complete Place
+  | Move Place Place
+  | Remove Place
   | Clean
   | Wipe
-  deriving (Show)
+
+newtype Place = Place Int
