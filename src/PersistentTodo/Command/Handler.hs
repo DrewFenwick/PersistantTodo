@@ -1,5 +1,6 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE ConstraintKinds #-}
 
 module PersistentTodo.Command.Handler
   ( handle
@@ -11,10 +12,9 @@ import           Control.Monad.Reader.Class
 import           Control.Monad.IO.Class
 import           Database.PostgreSQL.Simple     ( Connection )
 
-handle
-  :: (MonadIO m, MonadReader m, EnvType m ~ Connection)
-  => Command
-  -> m ()
+type HandlerStack m = (MonadIO m, MonadReader m, EnvType m ~ Connection)
+
+handle :: HandlerStack m => Command -> m ()
 handle = \case
   Add      place -> undefined
   Complete place -> undefined
