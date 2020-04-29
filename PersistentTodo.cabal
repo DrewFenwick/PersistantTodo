@@ -28,5 +28,6 @@ executable PersistentTodo
                        product-profunctors ^>= 0.10.0,
                        monads-tf ^>= 0.1.0,
                        postgresql-simple ^>= 0.6.2,
+                       profunctors == 5.5.2,
   hs-source-dirs:      src
   default-language:    Haskell2010
