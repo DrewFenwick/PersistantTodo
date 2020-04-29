@@ -11,6 +11,8 @@ module PersistentTodo.Task
 where
 
 import           Opaleye
+import           Data.Int
+import           Data.Profunctor.Product        ( p2 )
 import           Data.Profunctor.Product.TH     ( makeAdaptorAndInstance )
 
 data Status
@@ -29,10 +31,11 @@ $(makeAdaptorAndInstance "pTask" ''Task')
 setStatus :: Status -> Task -> Task
 setStatus status task = task { status = status }
 
-taskTable :: Table TaskField TaskField
-taskTable = table
-  "taskTable"
-  (pTask Task { title = tableField "title", status = tableField "status" })
+taskTable :: Table (Maybe (Field SqlInt4), TaskField) (Field SqlInt4, TaskField)
+taskTable = table "taskTable" $ p2
+  ( tableField "Id"
+  , pTask Task { title = tableField "title", status = tableField "condition" }
+  )
 
-taskSelect :: Select TaskField
+taskSelect :: Select (Column SqlInt4, TaskField)
 taskSelect = selectTable taskTable
