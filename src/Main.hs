@@ -1,6 +1,5 @@
 module Main where
 
-import           Data.Foldable                  ( fold )
 import           Options.Applicative
 import           PersistentTodo.Command
 import           PersistentTodo.Task            ( Title(..) )

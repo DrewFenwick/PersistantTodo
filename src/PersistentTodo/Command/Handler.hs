@@ -11,10 +11,14 @@ import           PersistentTodo.Command         ( Command(..)
                                                 , Place
                                                 )
 import           PersistentTodo.Task            ( Title(..)
+                                                , Task'(Task)
+                                                , Status(..)
+                                                , taskInsert
                                                 )
 import           Control.Monad.Reader.Class
 import           Control.Monad.IO.Class
 import           Database.PostgreSQL.Simple     ( Connection )
+import           Opaleye
 
 type HandlerStack m = (MonadIO m, MonadReader m, EnvType m ~ Connection)
 
@@ -28,7 +32,10 @@ handle = \case
   Wipe           -> wipe
 
 add :: HandlerStack m => Title -> m ()
-add = undefined
+add title = do
+  conn <- ask
+  _ <- liftIO . runInsert_ conn $ taskInsert Nothing (Task title Pending)
+  printTasks
 
 complete :: HandlerStack m => Place -> m ()
 complete = undefined
@@ -44,3 +51,6 @@ clean = undefined
 
 wipe :: HandlerStack m => m ()
 wipe = undefined
+
+printTasks :: HandlerStack m => m ()
+printTasks = undefined
