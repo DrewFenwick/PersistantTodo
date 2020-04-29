@@ -3,7 +3,7 @@ module Main where
 import           Data.Foldable                  ( fold )
 import           Options.Applicative
 import           PersistentTodo.Command
-import           PersistentTodo.Task (Title(..))
+import           PersistentTodo.Task            ( Title(..) )
 
 main :: IO ()
 main = performCommand =<< execParser opts
@@ -15,14 +15,16 @@ opts :: ParserInfo Command
 opts = info parseCommand mempty
 
 parseCommand :: Parser Command
-parseCommand = subparser $ fold
-  [ command "add"    (info parseAdd mempty)
-  , command "done"   (info parseComplete mempty)
-  , command "move"   (info parseMove mempty)
-  , command "remove" (info parseRemove mempty)
-  , command "clean"  (info (pure Clean) mempty)
-  , command "wipe"   (info (pure Wipe) mempty)
-  ]
+parseCommand =
+  subparser
+    . foldMap (uncurry command)
+    $ [ ("add"   , info parseAdd mempty)
+      , ("done"  , info parseComplete mempty)
+      , ("move"  , info parseMove mempty)
+      , ("remove", info parseRemove mempty)
+      , ("clean" , info (pure Clean) mempty)
+      , ("wipe"  , info (pure Wipe) mempty)
+      ]
 
 parseAdd :: Parser Command
 parseAdd = Add <$> argument (Title <$> str) (metavar "TITLE")
