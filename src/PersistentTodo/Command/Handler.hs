@@ -10,6 +10,8 @@ where
 import           PersistentTodo.Command         ( Command(..)
                                                 , Place
                                                 )
+import           PersistentTodo.Task            ( Title(..)
+                                                )
 import           Control.Monad.Reader.Class
 import           Control.Monad.IO.Class
 import           Database.PostgreSQL.Simple     ( Connection )
@@ -25,7 +27,7 @@ handle = \case
   Clean          -> clean
   Wipe           -> wipe
 
-add :: HandlerStack m => String -> m ()
+add :: HandlerStack m => Title -> m ()
 add = undefined
 
 complete :: HandlerStack m => Place -> m ()

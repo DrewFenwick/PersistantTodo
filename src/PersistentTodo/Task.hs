@@ -7,6 +7,7 @@ module PersistentTodo.Task
   ( Status(..)
   , Task'(..)
   , Task
+  , Title(..)
   , setStatus
   )
 where

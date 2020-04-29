@@ -3,6 +3,7 @@ module Main where
 import           Data.Foldable                  ( fold )
 import           Options.Applicative
 import           PersistentTodo.Command
+import           PersistentTodo.Task (Title(..))
 
 main :: IO ()
 main = performCommand =<< execParser opts
@@ -24,7 +25,7 @@ parseCommand = subparser $ fold
   ]
 
 parseAdd :: Parser Command
-parseAdd = Add <$> argument str (metavar "TITLE")
+parseAdd = Add <$> argument (Title <$> str) (metavar "TITLE")
 
 parseComplete :: Parser Command
 parseComplete = Complete <$> getPos
