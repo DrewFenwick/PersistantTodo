@@ -8,8 +8,10 @@ module PersistentTodo.Task
   , Task'(..)
   , Task
   , Title(..)
+  , TaskField
   , setStatus
   , taskInsert
+  , taskSelect
   )
 where
 
@@ -58,7 +60,7 @@ type TaskField = Task' (Field SqlText) (Field SqlBool)
 $(makeAdaptorAndInstance "pTask" ''Task')
 
 setStatus :: Status -> Task -> Task
-setStatus status task = task { status = status }
+setStatus s task = task { status = s }
 
 taskTable :: Table (Maybe (Field SqlInt4), TaskField) (Field SqlInt4, TaskField)
 taskTable = table "taskTable" $ p2

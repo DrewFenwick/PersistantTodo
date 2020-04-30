@@ -10,7 +10,13 @@ where
 import           PersistentTodo.Command         ( Command(..)
                                                 , Place
                                                 )
-import           PersistentTodo.Task
+import qualified PersistentTodo.Task           as Task
+import           PersistentTodo.Task            ( TaskField
+                                                , Task'(Task)
+                                                , Task
+                                                , taskInsert
+                                                , taskSelect
+                                                )
 import           Control.Monad.Reader.Class
 import           Control.Monad.IO.Class
 import           Database.PostgreSQL.Simple     ( Connection )
@@ -27,10 +33,10 @@ handle = \case
   Clean          -> clean
   Wipe           -> wipe
 
-add :: HandlerStack m => Title -> m ()
+add :: HandlerStack m => Task.Title -> m ()
 add title = do
   conn <- ask
-  _    <- liftIO . runInsert_ conn $ taskInsert Nothing (Task title Pending)
+  _ <- liftIO . runInsert_ conn $ taskInsert Nothing (Task title Task.Pending)
   printTasks
 
 complete :: HandlerStack m => Place -> m ()
