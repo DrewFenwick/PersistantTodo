@@ -10,11 +10,7 @@ where
 import           PersistentTodo.Command         ( Command(..)
                                                 , Place
                                                 )
-import           PersistentTodo.Task            ( Title(..)
-                                                , Task'(Task)
-                                                , Status(..)
-                                                , taskInsert
-                                                )
+import           PersistentTodo.Task
 import           Control.Monad.Reader.Class
 import           Control.Monad.IO.Class
 import           Database.PostgreSQL.Simple     ( Connection )
