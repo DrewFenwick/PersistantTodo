@@ -19,6 +19,7 @@ import           PersistentTodo.Task            ( TaskField
                                                 )
 import           Control.Monad.Reader.Class
 import           Control.Monad.IO.Class
+import           Data.Foldable
 import           Database.PostgreSQL.Simple     ( Connection )
 import           Opaleye
 
@@ -55,4 +56,12 @@ wipe :: HandlerStack m => m ()
 wipe = undefined
 
 printTasks :: HandlerStack m => m ()
-printTasks = undefined
+printTasks = do
+  conn  <- ask
+  tasks <-
+    liftIO
+      $ (runSelect conn :: Select (Column SqlInt4, TaskField)
+          -> IO [(Int, Task)]
+        )
+          taskSelect
+  liftIO $ traverse_ print tasks

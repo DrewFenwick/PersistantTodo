@@ -24,7 +24,7 @@ import           Data.Profunctor.Product.TH     ( makeAdaptorAndInstance )
 import           Data.Profunctor.Product.Default
                                                 ( Default(..) )
 
-newtype Title = Title { getTitle :: String}
+newtype Title = Title { getTitle :: String} deriving (Show)
 
 instance Default ToFields Title (Column PGText) where
   def = lmap getTitle def
@@ -32,6 +32,7 @@ instance Default ToFields Title (Column PGText) where
 data Status
   = Pending
   | Completed
+  deriving (Show)
 
 isComplete :: Status -> Bool
 isComplete = \case
@@ -53,7 +54,7 @@ instance QueryRunnerColumnDefault PGBool Status where
 data Task' t s = Task
   { title :: t
   , status :: s
-  }
+  } deriving (Show)
 
 type Task = Task' Title Status
 type TaskField = Task' (Field SqlText) (Field SqlBool)
