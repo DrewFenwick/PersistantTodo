@@ -4,7 +4,7 @@ module PersistentTodo.Command
   )
 where
 
-import PersistentTodo.Task (Title)
+import           PersistentTodo.Task            ( Title )
 
 data Command
   = Add Title

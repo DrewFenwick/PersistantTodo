@@ -30,7 +30,7 @@ handle = \case
 add :: HandlerStack m => Title -> m ()
 add title = do
   conn <- ask
-  _ <- liftIO . runInsert_ conn $ taskInsert Nothing (Task title Pending)
+  _    <- liftIO . runInsert_ conn $ taskInsert Nothing (Task title Pending)
   printTasks
 
 complete :: HandlerStack m => Place -> m ()
