@@ -14,6 +14,7 @@ module PersistentTodo.Task
 where
 
 import           Opaleye
+import           Data.Bool
 import           Data.Int
 import           Data.Profunctor
 import           Data.Profunctor.Product        ( p2 )
@@ -35,8 +36,17 @@ isComplete = \case
   Completed -> True
   _         -> False
 
+toStatus :: Bool -> Status
+toStatus = bool Pending Completed
+
 instance Default ToFields Status (Column PGBool) where
   def = lmap isComplete def
+
+instance QueryRunnerColumnDefault PGText Title where
+  queryRunnerColumnDefault = Title <$> fieldQueryRunnerColumn
+
+instance QueryRunnerColumnDefault PGBool Status where
+  queryRunnerColumnDefault = toStatus <$> fieldQueryRunnerColumn
 
 data Task' t s = Task
   { title :: t
