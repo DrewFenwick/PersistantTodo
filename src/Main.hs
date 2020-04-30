@@ -1,11 +1,26 @@
 module Main where
 
+import           Control.Monad.Reader
+import           Database.PostgreSQL.Simple
 import           Options.Applicative
 import           PersistentTodo.Command
+import           PersistentTodo.Command.Handler
 import           PersistentTodo.Task            ( Title(..) )
+import           System.Environment
 
 main :: IO ()
-main = performCommand =<< execParser opts
+main = do
+  comm <- execParser opts
+  conn <- makeConnection
+  runReaderT (handle comm) conn
+
+makeConnection :: IO Connection
+makeConnection = do
+  pass <- getEnv "PersistTodoPass"
+  connect defaultConnectInfo { connectUser     = "PersistentTodo"
+                             , connectPassword = pass
+                             , connectDatabase = "PersistentTodo"
+                             }
 
 performCommand :: Command -> IO ()
 performCommand = undefined
