@@ -60,9 +60,6 @@ type Task = Task' Title Status
 type TaskField = Task' (Field SqlText) (Field SqlBool)
 $(makeAdaptorAndInstance "pTask" ''Task')
 
-setStatus :: Status -> Task -> Task
-setStatus s task = task { status = s }
-
 taskTable :: Table (Maybe (Field SqlInt4), TaskField) (Field SqlInt4, TaskField)
 taskTable = table "taskTable" $ p2
   ( tableField "Id"
@@ -78,3 +75,11 @@ taskInsert key task = Insert { iTable      = taskTable
                              , iReturning  = rCount
                              , iOnConflict = Nothing
                              }
+
+setStatus :: Status -> Int -> Update Int64
+setStatus s id = Update
+  { uTable      = taskTable
+  , uUpdateWith = updateEasy (\(id_, t) -> (id_, t {status = toFields s}))
+  , uWhere      = (\(id_, _) -> id_ .== toFields id)
+  , uReturning  = rCount
+  }
