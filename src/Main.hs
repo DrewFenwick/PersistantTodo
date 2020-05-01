@@ -33,7 +33,7 @@ parseCommand =
   subparser
     . foldMap (uncurry command)
     $ [ ("add"   , info parseAdd mempty)
-      , ("done"  , info parseComplete mempty)
+      , ("done"  , info parseSet mempty)
       , ("move"  , info parseMove mempty)
       , ("remove", info parseRemove mempty)
       , ("clean" , info (pure Clean) mempty)
@@ -43,8 +43,8 @@ parseCommand =
 parseAdd :: Parser Command
 parseAdd = Add <$> argument (Title <$> str) (metavar "TITLE")
 
-parseComplete :: Parser Command
-parseComplete = Complete <$> getPos
+parseSet :: Parser Command
+parseSet = Set <$> undefined <*> getPos
 
 parseMove :: Parser Command
 parseMove = Move <$> getPos <*> getPos

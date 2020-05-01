@@ -28,7 +28,7 @@ type HandlerStack m = (MonadIO m, MonadReader m, EnvType m ~ Connection)
 handle :: HandlerStack m => Command -> m ()
 handle = \case
   Add      title -> add title
-  Complete place -> complete place
+  Set s place -> set s place
   Move start end -> move start end
   Remove place   -> remove place
   Clean          -> clean
@@ -40,8 +40,8 @@ add title = do
   _ <- liftIO . runInsert_ conn $ taskInsert Nothing (Task title Task.Pending)
   printTasks
 
-complete :: HandlerStack m => Place -> m ()
-complete = undefined
+set :: HandlerStack m => Task.Status -> Place -> m ()
+set = undefined
 
 move :: HandlerStack m => Place -> Place -> m ()
 move = undefined

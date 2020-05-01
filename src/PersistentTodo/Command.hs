@@ -4,11 +4,13 @@ module PersistentTodo.Command
   )
 where
 
-import           PersistentTodo.Task            ( Title )
+import           PersistentTodo.Task            ( Title
+                                                , Status
+                                                )
 
 data Command
   = Add Title
-  | Complete Place
+  | Set Status Place
   | Move Place Place
   | Remove Place
   | Clean
