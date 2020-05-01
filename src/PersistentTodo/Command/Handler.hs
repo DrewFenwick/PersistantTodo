@@ -36,8 +36,7 @@ handle = \case
 
 add :: HandlerStack m => Task.Title -> m ()
 add title = do
-  conn <- ask
-  _ <- liftIO . runInsert_ conn $ taskInsert Nothing (Task title Task.Pending)
+  usingConnection runInsert_ $ taskInsert Nothing (Task title Task.Pending)
   printTasks
 
 set :: HandlerStack m => Task.Status -> Place -> m ()
@@ -57,11 +56,13 @@ wipe = undefined
 
 printTasks :: HandlerStack m => m ()
 printTasks = do
-  conn  <- ask
-  tasks <-
-    liftIO
-      $ (runSelect conn :: Select (Column SqlInt4, TaskField)
-          -> IO [(Int, Task)]
-        )
-          taskSelect
+  tasks <- usingConnection
+    (runSelect :: Connection
+      -> Select (Column SqlInt4, TaskField)
+      -> IO [(Int, Task)]
+    )
+    taskSelect
   liftIO $ traverse_ print tasks
+
+usingConnection :: HandlerStack m => (Connection -> a -> IO b) -> a -> m b
+usingConnection runner action = liftIO . (`runner` action) =<< ask
