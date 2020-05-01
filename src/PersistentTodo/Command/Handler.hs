@@ -27,12 +27,12 @@ type HandlerStack m = (MonadIO m, MonadReader m, EnvType m ~ Connection)
 
 handle :: HandlerStack m => Command -> m ()
 handle = \case
-  Add      title -> add title
-  Set s place -> set s place
-  Move start end -> move start end
-  Remove place   -> remove place
-  Clean          -> clean
-  Wipe           -> wipe
+  Add title        -> add title
+  Set  s     place -> set s place
+  Move start end   -> move start end
+  Remove place     -> remove place
+  Clean            -> clean
+  Wipe             -> wipe
 
 add :: HandlerStack m => Task.Title -> m ()
 add title = do
