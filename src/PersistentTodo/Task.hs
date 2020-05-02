@@ -58,18 +58,21 @@ data Task' t s = Task
   } deriving (Show)
 
 type Task = Task' Title Status
-type TaskField = Task' (Field SqlText) (Field SqlBool)
+type TaskField = Task' (Field PGText) (Field PGBool)
 $(makeAdaptorAndInstance "pTask" ''Task')
+
+type NumberedTask = (Place, Task)
+type NumberedTaskField = (Field PGInt4, TaskField)
 
 newtype Place = Place {getPlace :: Int}
 
-taskTable :: Table (Maybe (Field SqlInt4), TaskField) (Field SqlInt4, TaskField)
+taskTable :: Table (Maybe (Field PGInt4), TaskField) NumberedTaskField
 taskTable = table "taskTable" $ p2
   ( tableField "Id"
   , pTask Task { title = tableField "title", status = tableField "condition" }
   )
 
-taskSelect :: Select (Column SqlInt4, TaskField)
+taskSelect :: Select NumberedTaskField
 taskSelect = selectTable taskTable
 
 taskInsert :: Maybe Int -> Task -> Insert Int64
@@ -82,7 +85,7 @@ taskInsert key task = Insert { iTable      = taskTable
 setStatus :: Status -> Int -> Update Int64
 setStatus s id = Update
   { uTable      = taskTable
-  , uUpdateWith = updateEasy (\(id_, t) -> (id_, t {status = toFields s}))
-  , uWhere      = (\(id_, _) -> id_ .== toFields id)
+  , uUpdateWith = updateEasy (\(id_, t) -> (id_, t { status = toFields s }))
+  , uWhere      = \(id_, _) -> id_ .== toFields id
   , uReturning  = rCount
   }
