@@ -46,7 +46,10 @@ move :: HandlerStack m => Task.Place -> Task.Place -> m ()
 move = undefined
 
 remove :: HandlerStack m => Task.Place -> m ()
-remove = undefined
+remove place = do
+  usingConnection runDelete_
+    $ Task.deleteTasks ((.== toFields place) . fst)
+  printTasks
 
 clean :: HandlerStack m => m ()
 clean = do
