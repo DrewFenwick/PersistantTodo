@@ -5,7 +5,7 @@ import           Database.PostgreSQL.Simple
 import           Options.Applicative
 import           PersistentTodo.Command
 import           PersistentTodo.Command.Handler
-import           PersistentTodo.Task            ( Title(..) )
+import qualified PersistentTodo.Task as Task
 import           System.Environment
 
 main :: IO ()
@@ -41,7 +41,7 @@ parseCommand =
       ]
 
 parseAdd :: Parser Command
-parseAdd = Add <$> argument (Title <$> str) (metavar "TITLE")
+parseAdd = Add <$> argument (Task.Title <$> str) (metavar "TITLE")
 
 parseSet :: Parser Command
 parseSet = Set <$> undefined <*> getPos
@@ -53,4 +53,4 @@ parseRemove :: Parser Command
 parseRemove = Remove <$> getPos
 
 getPos :: Parser Place
-getPos = argument (Place <$> auto) (metavar "POSITION")
+getPos = argument (Task.Place <$> auto) (metavar "POSITION")
