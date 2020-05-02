@@ -52,5 +52,5 @@ parseMove = Move <$> getPos <*> getPos
 parseRemove :: Parser Command
 parseRemove = Remove <$> getPos
 
-getPos :: Parser Place
+getPos :: Parser Task.Place
 getPos = argument (Task.Place <$> auto) (metavar "POSITION")

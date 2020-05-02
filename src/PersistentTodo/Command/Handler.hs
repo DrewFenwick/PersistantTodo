@@ -7,9 +7,7 @@ module PersistentTodo.Command.Handler
   )
 where
 
-import           PersistentTodo.Command         ( Command(..)
-                                                , Place
-                                                )
+import           PersistentTodo.Command         ( Command(..) )
 import qualified PersistentTodo.Task           as Task
 import           PersistentTodo.Task            ( TaskField
                                                 , Task'(Task)
@@ -39,13 +37,13 @@ add title = do
   usingConnection runInsert_ $ taskInsert Nothing (Task title Task.Pending)
   printTasks
 
-set :: HandlerStack m => Task.Status -> Place -> m ()
-set = undefined
+set :: HandlerStack m => Task.Status -> Task.Place -> m ()
+set s (Task.Place place) = undefined
 
-move :: HandlerStack m => Place -> Place -> m ()
+move :: HandlerStack m => Task.Place -> Task.Place -> m ()
 move = undefined
 
-remove :: HandlerStack m => Place -> m ()
+remove :: HandlerStack m => Task.Place -> m ()
 remove = undefined
 
 clean :: HandlerStack m => m ()

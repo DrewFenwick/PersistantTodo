@@ -1,11 +1,11 @@
 module PersistentTodo.Command
   ( Command(..)
-  , Place(..)
   )
 where
 
 import           PersistentTodo.Task            ( Title
                                                 , Status
+                                                , Place
                                                 )
 
 data Command
@@ -15,5 +15,3 @@ data Command
   | Remove Place
   | Clean
   | Wipe
-
-newtype Place = Place Int
