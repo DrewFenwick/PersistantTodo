@@ -12,9 +12,9 @@ import qualified PersistentTodo.Task           as Task
 import           PersistentTodo.Task            ( TaskField
                                                 , Task'(Task)
                                                 , Task
-                                                , taskInsert
-                                                , taskSelect
                                                 )
+import           PersistentTodo.Table          as Table
+
 import           Control.Monad.Reader.Class
 import           Control.Monad.IO.Class
 import           Data.Foldable
@@ -39,7 +39,7 @@ add title = do
 
 set :: HandlerStack m => Task.Status -> Task.Place -> m ()
 set s (Task.Place place) = do
-  _ <- usingConnection runUpdate_ $ Task.setStatus s place
+  _ <- usingConnection runUpdate_ $ Table.setStatus s place
   printTasks
 
 move :: HandlerStack m => Task.Place -> Task.Place -> m ()
@@ -47,19 +47,18 @@ move = undefined
 
 remove :: HandlerStack m => Task.Place -> m ()
 remove place = do
-  usingConnection runDelete_
-    $ Task.deleteTasks ((.== toFields place) . fst)
+  usingConnection runDelete_ $ Table.deleteTasks ((.== toFields place) . fst)
   printTasks
 
 clean :: HandlerStack m => m ()
 clean = do
   usingConnection runDelete_
-    $ Task.deleteTasks ((.== toFields Task.Completed) . Task.status . snd)
+    $ Table.deleteTasks ((.== toFields Task.Completed) . Task.status . snd)
   printTasks
 
 wipe :: HandlerStack m => m ()
 wipe = do
-  _ <- usingConnection runDelete_ $ Task.deleteTasks (const . toFields $ True)
+  _ <- usingConnection runDelete_ $ Table.deleteTasks (const . toFields $ True)
   liftIO $ putStrLn "Done."
 
 printTasks :: HandlerStack m => m ()

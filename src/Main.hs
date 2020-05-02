@@ -5,7 +5,7 @@ import           Database.PostgreSQL.Simple
 import           Options.Applicative
 import           PersistentTodo.Command
 import           PersistentTodo.Command.Handler
-import qualified PersistentTodo.Task as Task
+import qualified PersistentTodo.Task           as Task
 import           System.Environment
 
 main :: IO ()
