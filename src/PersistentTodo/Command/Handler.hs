@@ -38,7 +38,9 @@ add title = do
   printTasks
 
 set :: HandlerStack m => Task.Status -> Task.Place -> m ()
-set s (Task.Place place) = undefined
+set s (Task.Place place) = do
+  _ <- usingConnection runUpdate_ $ Task.setStatus s place
+  printTasks
 
 move :: HandlerStack m => Task.Place -> Task.Place -> m ()
 move = undefined
