@@ -14,6 +14,7 @@ module PersistentTodo.Task
   , setStatus
   , taskInsert
   , taskSelect
+  , deleteTasks
   )
 where
 
@@ -96,4 +97,11 @@ setStatus s id = Update
   , uUpdateWith = updateEasy (\(id_, t) -> (id_, t { status = toFields s }))
   , uWhere      = \(id_, _) -> id_ .== toFields id
   , uReturning  = rCount
+  }
+
+deleteTasks :: (NumberedTaskField -> Field PGBool) -> Delete Int64
+deleteTasks pred = Delete
+  { dTable = taskTable
+  , dWhere = pred
+  , dReturning = rCount
   }
