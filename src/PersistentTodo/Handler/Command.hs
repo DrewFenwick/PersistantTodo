@@ -1,4 +1,4 @@
-module PersistentTodo.Command
+module PersistentTodo.Handler.Command
   ( Command(..)
   )
 where

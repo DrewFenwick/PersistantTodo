@@ -2,12 +2,12 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE ConstraintKinds #-}
 
-module PersistentTodo.Command.Handler
+module PersistentTodo.Handler
   ( handle
   )
 where
 
-import           PersistentTodo.Command         ( Command(..) )
+import           PersistentTodo.Handler.Command ( Command(..) )
 import qualified PersistentTodo.Task           as Task
 import           PersistentTodo.Task            ( TaskField
                                                 , Task'(Task)
