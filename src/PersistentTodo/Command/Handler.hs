@@ -55,7 +55,9 @@ clean = do
   printTasks
 
 wipe :: HandlerStack m => m ()
-wipe = undefined
+wipe = do
+  _ <- usingConnection runDelete_ $ Task.deleteTasks (const . toFields $ True)
+  liftIO $ putStrLn "Done."
 
 printTasks :: HandlerStack m => m ()
 printTasks = do
