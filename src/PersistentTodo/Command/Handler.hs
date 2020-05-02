@@ -49,7 +49,10 @@ remove :: HandlerStack m => Task.Place -> m ()
 remove = undefined
 
 clean :: HandlerStack m => m ()
-clean = undefined
+clean = do
+  usingConnection runDelete_
+    $ Task.deleteTasks ((.== toFields Task.Completed) . Task.status . snd)
+  printTasks
 
 wipe :: HandlerStack m => m ()
 wipe = undefined
