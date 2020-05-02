@@ -1,5 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE LambdaCase #-}
 
@@ -18,6 +19,7 @@ where
 
 import           Opaleye
 import           Data.Bool
+import           Data.Coerce
 import           Data.Int
 import           Data.Profunctor
 import           Data.Profunctor.Product        ( p2 )
@@ -29,6 +31,9 @@ newtype Title = Title { getTitle :: String} deriving (Show)
 
 instance Default ToFields Title (Column PGText) where
   def = lmap getTitle def
+
+instance QueryRunnerColumnDefault PGText Title where
+  queryRunnerColumnDefault = Title <$> fieldQueryRunnerColumn
 
 data Status
   = Pending
@@ -46,9 +51,6 @@ toStatus = bool Pending Completed
 instance Default ToFields Status (Column PGBool) where
   def = lmap isComplete def
 
-instance QueryRunnerColumnDefault PGText Title where
-  queryRunnerColumnDefault = Title <$> fieldQueryRunnerColumn
-
 instance QueryRunnerColumnDefault PGBool Status where
   queryRunnerColumnDefault = toStatus <$> fieldQueryRunnerColumn
 
@@ -65,6 +67,12 @@ type NumberedTask = (Place, Task)
 type NumberedTaskField = (Field PGInt4, TaskField)
 
 newtype Place = Place {getPlace :: Int}
+
+instance Default ToFields Place (Column PGInt4) where
+  def = lmap getPlace def
+
+instance QueryRunnerColumnDefault PGInt4 Place where
+  queryRunnerColumnDefault = Place <$> fieldQueryRunnerColumn
 
 taskTable :: Table (Maybe (Field PGInt4), TaskField) NumberedTaskField
 taskTable = table "taskTable" $ p2
