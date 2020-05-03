@@ -7,22 +7,22 @@ module PersistentTodo.Handler
   )
 where
 
+import           Control.Monad                  ( when )
+import           Control.Monad.IO.Class
+import           Control.Monad.Reader.Class
+import           Data.Bifunctor                 ( first )
+import           Data.Foldable
+import           Data.Maybe                     ( listToMaybe )
+import           Database.PostgreSQL.Simple     ( Connection )
+import           Opaleye
+
 import           PersistentTodo.Handler.Command ( Command(..) )
-import qualified PersistentTodo.Task           as Task
 import           PersistentTodo.Task            ( TaskField
                                                 , Task'(Task)
                                                 , Task
                                                 )
 import qualified PersistentTodo.Table          as Table
-
-import           Control.Monad                  ( when )
-import           Control.Monad.Reader.Class
-import           Control.Monad.IO.Class
-import           Data.Foldable
-import           Data.Maybe                     ( listToMaybe )
-import           Data.Bifunctor                 ( first )
-import           Database.PostgreSQL.Simple     ( Connection )
-import           Opaleye
+import qualified PersistentTodo.Task           as Task
 
 type HandlerStack m = (MonadIO m, MonadReader m, EnvType m ~ Connection)
 
