@@ -22,8 +22,8 @@ taskTable = table "taskTable" $ p2
 taskSelect :: Select NumberedTaskField
 taskSelect = selectTable taskTable
 
-taskInsert :: Maybe Int -> Task -> Insert Int64
-taskInsert key task = Insert { iTable      = taskTable
+taskInsert :: (Maybe Place, Task) -> Insert Int64
+taskInsert (key, task) = Insert { iTable      = taskTable
                              , iRows       = pure $ toFields (key, task)
                              , iReturning  = rCount
                              , iOnConflict = Nothing
@@ -37,6 +37,6 @@ setStatus s id = Update
   , uReturning  = rCount
   }
 
-deleteTasks :: (NumberedTaskField -> Field PGBool) -> Delete Int64
+deleteTasks :: (NumberedTaskField -> Field PGBool) -> Delete [NumberedTask]
 deleteTasks pred =
-  Delete { dTable = taskTable, dWhere = pred, dReturning = rCount }
+  Delete { dTable = taskTable, dWhere = pred, dReturning = rReturning id }

@@ -13,11 +13,12 @@ import           PersistentTodo.Task            ( TaskField
                                                 , Task'(Task)
                                                 , Task
                                                 )
-import           PersistentTodo.Table          as Table
+import qualified PersistentTodo.Table          as Table
 
 import           Control.Monad.Reader.Class
 import           Control.Monad.IO.Class
 import           Data.Foldable
+import           Data.Maybe                     ( listToMaybe )
 import           Database.PostgreSQL.Simple     ( Connection )
 import           Opaleye
 
@@ -34,7 +35,8 @@ handle = \case
 
 add :: HandlerStack m => Task.Title -> m ()
 add title = do
-  usingConnection runInsert_ $ taskInsert Nothing (Task title Task.Pending)
+  usingConnection runInsert_
+    $ Table.taskInsert (Nothing, Task title Task.Pending)
   printTasks
 
 set :: HandlerStack m => Task.Status -> Task.Place -> m ()
@@ -47,7 +49,7 @@ move = undefined
 
 remove :: HandlerStack m => Task.Place -> m ()
 remove place = do
-  ucDelete $ Table.deleteTasks ((.== toFields place) . fst)
+  deleteTask place
   printTasks
 
 clean :: HandlerStack m => m ()
@@ -68,7 +70,7 @@ printTasks = do
       -> Select (Column SqlInt4, TaskField)
       -> IO [(Int, Task)]
     )
-    taskSelect
+    Table.taskSelect
   liftIO $ traverse_ print tasks
 
 usingConnection :: HandlerStack m => (Connection -> a -> IO b) -> a -> m b
@@ -76,3 +78,9 @@ usingConnection runner action = liftIO . (`runner` action) =<< ask
 
 ucDelete :: HandlerStack m => Delete a -> m a
 ucDelete = usingConnection runDelete_
+
+deleteTask :: HandlerStack m => Task.Place -> m (Maybe Task.NumberedTask)
+deleteTask = fmap listToMaybe . ucDelete . Table.deleteTasks . placeEquals
+
+placeEquals :: Task.Place -> Task.NumberedTaskField -> Column PGBool
+placeEquals place = (.== toFields place) . fst
