@@ -47,18 +47,18 @@ move = undefined
 
 remove :: HandlerStack m => Task.Place -> m ()
 remove place = do
-  usingConnection runDelete_ $ Table.deleteTasks ((.== toFields place) . fst)
+  ucDelete $ Table.deleteTasks ((.== toFields place) . fst)
   printTasks
 
 clean :: HandlerStack m => m ()
 clean = do
-  usingConnection runDelete_
+  ucDelete
     $ Table.deleteTasks ((.== toFields Task.Completed) . Task.status . snd)
   printTasks
 
 wipe :: HandlerStack m => m ()
 wipe = do
-  _ <- usingConnection runDelete_ $ Table.deleteTasks (const . toFields $ True)
+  _ <- ucDelete $ Table.deleteTasks (const . toFields $ True)
   liftIO $ putStrLn "Done."
 
 printTasks :: HandlerStack m => m ()
@@ -73,3 +73,6 @@ printTasks = do
 
 usingConnection :: HandlerStack m => (Connection -> a -> IO b) -> a -> m b
 usingConnection runner action = liftIO . (`runner` action) =<< ask
+
+ucDelete :: HandlerStack m => Delete a -> m a
+ucDelete = usingConnection runDelete_
