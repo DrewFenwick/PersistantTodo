@@ -22,9 +22,6 @@ makeConnection = do
                              , connectDatabase = "PersistentTodo"
                              }
 
-performCommand :: Command -> IO ()
-performCommand = undefined
-
 opts :: ParserInfo Command
 opts = info parseCommand mempty
 
