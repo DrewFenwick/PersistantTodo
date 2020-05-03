@@ -25,10 +25,10 @@ taskSelect = selectTable taskTable
 
 taskInsert :: (Maybe Place, Task) -> Insert Int64
 taskInsert (key, task) = Insert { iTable      = taskTable
-                             , iRows       = pure $ toFields (key, task)
-                             , iReturning  = rCount
-                             , iOnConflict = Nothing
-                             }
+                                , iRows       = pure $ toFields (key, task)
+                                , iReturning  = rCount
+                                , iOnConflict = Nothing
+                                }
 
 setStatus :: Status -> Int -> Update Int64
 setStatus s id = Update
