@@ -6,10 +6,10 @@ module PersistentTodo.Task.Title
   )
 where
 
-import           Opaleye
 import           Data.Profunctor
 import           Data.Profunctor.Product.Default
                                                 ( Default(..) )
+import           Opaleye
 
 newtype Title = Title { getTitle :: String} deriving (Show)
 

@@ -7,11 +7,11 @@ module PersistentTodo.Task.Status
   )
 where
 
-import           Opaleye
 import           Data.Bool
 import           Data.Profunctor
 import           Data.Profunctor.Product.Default
                                                 ( Default(..) )
+import           Opaleye
 
 data Status
   = Pending

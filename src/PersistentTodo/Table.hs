@@ -7,10 +7,9 @@ module PersistentTodo.Table
   )
 where
 
-import           Opaleye
 import           Data.Int
 import           Data.Profunctor.Product        ( p2 )
-
+import           Opaleye
 
 import           PersistentTodo.Task
 

@@ -6,10 +6,10 @@ module PersistentTodo.Task.Place
   )
 where
 
-import           Opaleye
 import           Data.Profunctor
 import           Data.Profunctor.Product.Default
                                                 ( Default(..) )
+import           Opaleye
 
 newtype Place = Place {getPlace :: Int} deriving (Eq, Ord)
 

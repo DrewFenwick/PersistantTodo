@@ -3,10 +3,11 @@ module Main where
 import           Control.Monad.Reader
 import           Database.PostgreSQL.Simple
 import           Options.Applicative
+import           System.Environment
+
 import           PersistentTodo.Handler
 import           PersistentTodo.Handler.Command
 import qualified PersistentTodo.Task           as Task
-import           System.Environment
 
 main :: IO ()
 main = do

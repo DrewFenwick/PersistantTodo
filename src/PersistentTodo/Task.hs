@@ -19,10 +19,9 @@ where
 import           Opaleye
 import           Data.Profunctor.Product.TH     ( makeAdaptorAndInstance )
 
-
+import           PersistentTodo.Task.Place
 import           PersistentTodo.Task.Status
 import           PersistentTodo.Task.Title
-import           PersistentTodo.Task.Place
 
 data Task' t s = Task
   { title :: t
