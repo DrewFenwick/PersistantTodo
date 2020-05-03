@@ -15,10 +15,12 @@ import           PersistentTodo.Task            ( TaskField
                                                 )
 import qualified PersistentTodo.Table          as Table
 
+import           Control.Monad                  ( when )
 import           Control.Monad.Reader.Class
 import           Control.Monad.IO.Class
 import           Data.Foldable
 import           Data.Maybe                     ( listToMaybe )
+import           Data.Bifunctor                 ( first )
 import           Database.PostgreSQL.Simple     ( Connection )
 import           Opaleye
 
@@ -45,7 +47,25 @@ set s (Task.Place place) = do
   printTasks
 
 move :: HandlerStack m => Task.Place -> Task.Place -> m ()
-move = undefined
+move start finish = do
+  when (start /= finish) $ do
+    task <- deleteTask start
+    maybe notFound found task
+  printTasks
+ where
+  notFound = liftIO $ putStrLn "Task does not exist"
+
+  found (_, t) = do
+    usingConnection runUpdate_ shift
+    usingConnection runInsert_ $ Table.taskInsert (Just finish, t)
+    printTasks
+
+  shift = if start > finish
+    then Table.updateTasks (inRange finish start . fst) (first (+ 1))
+    else Table.updateTasks (inRange start finish . fst) (first (subtract 1))
+
+inRange :: Task.Place -> Task.Place -> Field PGInt4 -> Field PGBool
+inRange start finish n = toFields start .< n .&& n .< toFields finish
 
 remove :: HandlerStack m => Task.Place -> m ()
 remove place = do

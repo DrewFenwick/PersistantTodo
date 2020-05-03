@@ -11,7 +11,7 @@ import           Data.Profunctor
 import           Data.Profunctor.Product.Default
                                                 ( Default(..) )
 
-newtype Place = Place {getPlace :: Int}
+newtype Place = Place {getPlace :: Int} deriving (Eq, Ord)
 
 instance Default ToFields Place (Column PGInt4) where
   def = lmap getPlace def
